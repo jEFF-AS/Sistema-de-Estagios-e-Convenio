@@ -1,0 +1,32 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
+        Schema::table('users', function (Blueprint $table) {
+            // Criando o perfil logo após o email. 
+            // O padrão será 'employee' (funcionário) para segurança.
+            $table->enum('role', ['admin', 'employee'])->default('employee')->after('email');
+
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        Schema::table('users', function (Blueprint $table) {
+            // Se precisarmos reverter a migration, ele remove apenas a coluna criada.
+            $table->dropColumn('role');
+        });
+    }
+};

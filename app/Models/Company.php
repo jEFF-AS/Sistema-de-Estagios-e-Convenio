@@ -16,6 +16,7 @@ class Company extends Model
         'trading_name',
         'cnpj',
         'representative',
+        'phone',
         'relationship_start_date',
         'relationship_end_date',
         'courses',

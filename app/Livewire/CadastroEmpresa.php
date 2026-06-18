@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 use Livewire\Component;
+use Livewire\Attributes\Layouts;
 use App\Models\Company;
 
 class CadastroEmpresa extends Component
@@ -15,6 +16,7 @@ class CadastroEmpresa extends Component
     public $trading_name = '';
     public $cnpj = '';
     public $representative = '';
+    public $phone = '';
     public $relationship_start_date = '';
     public $relationship_end_date = '';
     public $select_courses = [];
@@ -45,6 +47,7 @@ class CadastroEmpresa extends Component
             'trading_name' => 'required|string|max:255',
             'cnpj' => 'required|string|max:18',
             'representative' => 'required|string|max:255',
+            'phone' => 'nullable|string|max:20',
             'relationship_start_date' => 'required|date',
             // Garante que o convênio não termine antes de começar
             'relationship_end_date' => 'required|date|after_or_equal:relationship_start_date',
@@ -62,6 +65,7 @@ class CadastroEmpresa extends Component
                 'trading_name' => $this->trading_name,
                 'cnpj' => $this->cnpj, 
                 'representative' => $this->representative,
+                'phone' => $this->phone,
                 'relationship_start_date' => $this->relationship_start_date,   
                 'relationship_end_date' => $this->relationship_end_date,
                 'courses' => $this->select_courses, // O Laravel convertera o array em texto/json para o banco
@@ -85,6 +89,7 @@ class CadastroEmpresa extends Component
         $this->trading_name = '';
         $this->cnpj = '';
         $this->representative = '';
+        $this->phone = '';
         $this->relationship_start_date = '';
         $this->relationship_end_date = '';
         $this->select_courses = [];

@@ -13,11 +13,11 @@ return new class extends Migration
     {
         Schema::create('students', function (Blueprint $table) {
             $table->id();
-            $table->string('name'); // Nome do aluno
-            $table->string('registration_number')->unique(); //Matrícula
-            $table->string('course'); // Curso
-            $table->string('period'); // Período
-            $table->string('curse_start_date'); // Início do Curso
+            $table->string('name');
+            $table->string('registration_number')->unique();
+            $table->string('course');
+            $table->integer('period');
+            $table->date('course_start_date');
             $table->timestamps();
         });
     }

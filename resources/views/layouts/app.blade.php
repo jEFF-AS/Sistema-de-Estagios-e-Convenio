@@ -23,7 +23,7 @@
                     <a href="#" class="flex items-center justify-center w-full px-4 py-2.5 rounded-lg shadow-md font-bold text-sm tracking-wide border transition {{ request()->is('painel*') ? 'bg-blue-800 text-white border-blue-600' : 'bg-white text-[#1e40af] border-gray-200' }}">Painel Geral</a>
                     <a href="/empresas" class="flex items-center justify-center w-full px-4 py-2.5 rounded-lg shadow-md font-bold text-sm tracking-wide border transition {{ request()->is('empresas*') ? 'bg-blue-800 text-white border-blue-600' : 'bg-white text-[#1e40af] border-gray-200' }}">Empresas</a>
                     <a href="/alunos" class="flex items-center justify-center w-full px-4 py-2.5 rounded-lg shadow-md font-bold text-sm tracking-wide border transition {{ request()->is('alunos*') ? 'bg-blue-800 text-white border-blue-600' : 'bg-white text-[#1e40af] border-gray-200' }}">Alunos</a>
-                    <a href="#" class="flex items-center justify-center w-full px-4 py-2.5 rounded-lg shadow-md font-bold text-sm tracking-wide border transition {{ request()->is('vinculos*') ? 'bg-blue-800 text-white border-blue-600' : 'bg-white text-[#1e40af] border-gray-200' }}">Vínculos</a>
+                    <a href="/vinculos" class="flex items-center justify-center w-full px-4 py-2.5 rounded-lg shadow-md font-bold text-sm tracking-wide border transition {{ request()->is('vinculos*') ? 'bg-blue-800 text-white border-blue-600' : 'bg-white text-[#1e40af] border-gray-200' }}">Vínculos</a>
                 </nav>
             </div>
         </div>

@@ -12,6 +12,18 @@ Route::get('/alunos', function() {
     return view('alunos');
 })->name('students.index');
 
+Route::get('/vinculos', function() {
+    return view('vinculos');
+})->name('vinculos.index');
+
+Route::get('/vinculos/novo', function () {
+    return view('form-vinculo');
+});
+
+Route::get('/vinculos/editar/{id}', function ($id) {
+    return view('form-vinculo', ['id'=> $id]);
+});
+
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::view('dashboard', 'dashboard')->name('dashboard');
 });

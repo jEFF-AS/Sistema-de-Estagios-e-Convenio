@@ -41,7 +41,7 @@
             </div>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-5 gap-4 pt-2">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 pt-2">
             <div>
                 <label class="block text-xs font-extrabold text-gray-700 uppercase tracking-wider mb-2">Status de Vínculo:</label>
                 <select wire:model="status" class="w-full px-3 py-2 border border-gray-300 rounded-xl text-sm shadow-sm bg-white focus:ring-2 focus:ring-blue-500 focus:outline-none transition font-medium text-gray-600">
@@ -50,35 +50,21 @@
                 </select>
             </div>
             <div>
-                <label class="block text-xs font-extrabold text-gray-700 uppercase tracking-wider mb-2">Tipo de Estágio:</label>
-                <select class="w-full px-3 py-2 border border-gray-300 rounded-xl text-sm shadow-sm bg-white focus:ring-2 focus:ring-blue-500 focus:outline-none transition font-medium text-gray-600">
-                    <option value="mandatory">Obrigatório</option>
-                    <option value="non_mandatory">Não Obrigatório</option>
-                </select>
-            </div>
-            <div>
-                <label class="block text-xs font-extrabold text-gray-700 uppercase tracking-wider mb-2">Modalidade:</label>
-                <select class="w-full px-3 py-2 border border-gray-300 rounded-xl text-sm shadow-sm bg-white focus:ring-2 focus:ring-blue-500 focus:outline-none transition font-medium text-gray-600">
-                    <option value="on_site">Presencial</option>
-                    <option value="remote">Remoto</option>
-                </select>
-            </div>
-            <div>
-                <label class="block text-xs font-extrabold text-gray-600 uppercase tracking-wider mb-2">Data de Início:</label>
+                <label class="block text-xs font-extrabold text-gray-600 uppercase tracking-wider mb-2">Data de Início do Convênio:</label>
                 <input wire:model="relationship_start_date" type="date" class="w-full px-3 py-2 border border-gray-300 rounded-xl text-sm shadow-sm focus:ring-2 focus:ring-blue-500 focus:outline-none transition">
                 @error('relationship_start_date') <span class="text-red-500 text-xs mt-1 block font-medium">{{ $message }}</span> @enderror
             </div>
             <div>
-                <label class="block text-xs font-extrabold text-gray-600 uppercase tracking-wider mb-2">Data de Término:</label>
+                <label class="block text-xs font-extrabold text-gray-600 uppercase tracking-wider mb-2">Data de Término do Convênio:</label>
                 <input wire:model="relationship_end_date" type="date" class="w-full px-3 py-2 border border-gray-300 rounded-xl text-sm shadow-sm focus:ring-2 focus:ring-blue-500 focus:outline-none transition">
                 @error('relationship_end_date') <span class="text-red-500 text-xs mt-1 block font-medium">{{ $message }}</span> @enderror
             </div>
         </div>
 
-        <div class="space-y-2 pt-2 relative">
+        <div x-data="{ open: @entangle('showCoursesDropdown') }" @click.outside="open = false" class="space-y-2 pt-2 relative">
             <label class="block text-xs font-extrabold text-gray-700 uppercase tracking-wider">Cursos com estágios autorizados:</label>
 
-            <button type="button" wire:click="$toggle('showCoursesDropdown')" class="w-full flex items-center justify-between px-4 py-2.5 bg-white border border-gray-300 rounded-xl text-sm shadow-sm text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 transition font-medium">
+            <button type="button" @click="open = !open" class="w-full flex items-center justify-between px-4 py-2.5 bg-white border border-gray-300 rounded-xl text-sm shadow-sm text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 transition font-medium">
                 <span>
                     @if(count($select_courses) === 0)
                         Selecionar Cursos...
@@ -86,23 +72,21 @@
                         {{ count($select_courses) }} curso(s) selecionado(s)
                     @endif
                 </span>
-                <svg class="w-5 h-5 text-gray-400 transition-transform {{ $showCoursesDropdown ? 'rotate-180' : '' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg class="w-5 h-5 text-gray-400 transition-transform" :class="open ? 'rotate-180' : ''" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
                 </svg>
             </button>
 
-            @if($showCoursesDropdown)
-            <div class="absolute z-50 w-full mt-1 bg-white p-4 rounded-xl border border-gray-200 shadow-xl max-h-60 overflow-y-auto">
+            <div x-show="open" x-transition class="absolute z-50 w-full mt-1 bg-white p-4 rounded-xl border border-gray-200 shadow-xl max-h-60 overflow-y-auto">
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
                     @foreach($avaliable_courses as $course)
-                    <label class="flex items-center space-x-3 text-xs text-gray-700 cursor-pointer p-2 bg-gray-50 hover:bg-blue-50 rounded-lg shadow-sm border border-gray-100 hover:border-blue-200 transition font-medium">
-                        <input type="checkbox" wire:model="select_courses" value="{{ $course }}" class="rounded text-blue-600 focus:ring-blue-500 h-4 w-4 border-gray-300">
+                    <label class="flex items-center space-x-3 text-xs text-gray-700 cursor-pointer p-2 bg-gray-50 hover:bg-blue-50 rounded-lg shadow-sm border border-gray-100 hover:border-blue-200 transition font-medium" wire:key="course-{{ $loop->index }}">
+                        <input type="checkbox" wire:model.live="select_courses" value="{{ $course }}" class="rounded text-blue-600 focus:ring-blue-500 h-4 w-4 border-gray-300">
                         <span>{{ $course }}</span>
                     </label>
                     @endforeach
                 </div>
             </div>
-            @endif
             @error('select_courses') <span class="text-red-500 text-xs font-medium block">{{ $message }}</span> @enderror
         </div>
 
@@ -113,7 +97,7 @@
         </div>
 
         <div class="flex justify-end gap-4 pt-4 border-t border-gray-100">
-            <button type="button" class="px-6 py-2.5 border border-gray-300 text-gray-700 text-sm rounded-xl hover:bg-gray-50 transition font-bold uppercase tracking-wider">
+            <button type="button" wire:click="resetForm" class="px-6 py-2.5 border border-gray-300 text-gray-700 text-sm rounded-xl hover:bg-gray-50 transition font-bold uppercase tracking-wider">
                 Limpar
             </button>
             <button type="submit" class="px-8 py-2.5 bg-[#1e40af] text-white text-sm rounded-xl hover:bg-blue-800 transition font-bold uppercase tracking-wider shadow-md">

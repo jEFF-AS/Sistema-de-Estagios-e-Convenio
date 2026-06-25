@@ -12,7 +12,9 @@
                 <select wire:model.live="student_id" class="w-full px-3 py-2 border border-gray-300 !rounded-xl text-sm shadow-sm bg-white focus:ring-2 focus:ring-blue-500 focus:outline-none transition font-medium text-gray-600">
                     <option value="">Selecionar aluno...</option>
                     @foreach($students as $student)
-                        <option value="{{ $student->id }}">{{ $student->name }} ({{ $student->registration_number }})</option>
+                        <option value="{{ $student->id }}" wire:key="select-student-{{ $student->id }}">
+                            {{ $student->name }} ({{ $student->registration_number }})
+                        </option>
                     @endforeach
                 </select>
             </div>
@@ -22,7 +24,9 @@
                 <select wire:model.live="company_id" class="w-full px-3 py-2 border border-gray-300 !rounded-xl text-sm shadow-sm bg-white focus:ring-2 focus:ring-blue-500 focus:outline-none transition font-medium text-gray-600">
                     <option value="">Selecionar empresa...</option>
                     @foreach($companies as $company)
-                        <option value="{{ $company->id }}">{{ $company->trading_name ?? $company->name }}</option>
+                        <option value="{{ $company->id }}" wire:key="select-company-{{ $company->id }}">
+                            {{ $company->trading_name ?? $company->name }}
+                        </option>
                     @endforeach
                 </select>
             </div>

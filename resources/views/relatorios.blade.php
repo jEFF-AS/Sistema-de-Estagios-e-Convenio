@@ -1,5 +1,5 @@
 @extends('layouts.app')
 
 @section('conteudo')
-    @livewire('lista-alunos')
+    <livewire:relatorios-dashboard />
 @endsection

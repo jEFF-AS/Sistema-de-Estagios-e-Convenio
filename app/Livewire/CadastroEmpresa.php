@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Livewire;
+
 use Livewire\Component;
 use Livewire\Attributes\Layouts;
 use App\Models\Company;
@@ -8,9 +9,6 @@ use App\Models\Company;
 class CadastroEmpresa extends Component
 {
     // 1. PROPRIEDADES 
-    // No Livewire v3 tradicional, toda propriedade pública vira uma variável reativa.
-    // O que o usuário digita no HTML altera essas variáveis em tempo real.
-
     public $companyId = null;
     public $name = ''; 
     public $trading_name = '';
@@ -19,7 +17,7 @@ class CadastroEmpresa extends Component
     public $phone = '';
     public $relationship_start_date = '';
     public $relationship_end_date = '';
-    public $select_courses = [];
+    public $select_courses = []; // Mapeia o campo 'courses' do banco nesta propriedade
     public $status = 'active';
     public $observations = '';
     public $showCoursesDropdown = false;
@@ -36,12 +34,36 @@ class CadastroEmpresa extends Component
         'Sistemas de Informação',
     ];
 
+    // GATILHO DE CARREGAMENTO (Essencial para a Edição funcionar!)
+    public function mount($companyId = null)
+    {
+        if ($companyId) {
+            $this->companyId = $companyId;
+            
+            // Busca a empresa existente no banco
+            $company = Company::findOrFail($companyId);
+            
+            // Popula os campos do formulário para edição
+            $this->name = $company->name;
+            $this->trading_name = $company->trading_name;
+            $this->cnpj = $company->cnpj;
+            $this->representative = $company->representative;
+            $this->phone = $company->phone;
+            
+            // Converte os objetos de data do Carbon para texto no formato aceito pelo input HTML (ano-mes-dia)
+            $this->relationship_start_date = $company->relationship_start_date ? $company->relationship_start_date->format('Y-m-d') : '';
+            $this->relationship_end_date = $company->relationship_end_date ? $company->relationship_end_date->format('Y-m-d') : '';
+            
+            // Garante que os cursos venham como array para o formulário
+            $this->select_courses = is_array($company->courses) ? $company->courses : [];
+            $this->status = $company->status;
+            $this->observations = $company->observations;
+        }
+    }
+
     // 2. REGRAS DE VALIDAÇÃO E SALVAMENTO
-    // Esta função sera chamada quando o botão "Salvar Dados" for clicado
     public function save()
     {
-        // O método $this->validate intercepta o envio se houver campos em branco
-        // Ou regras desrespeitadas, devolvendo erros especificos para a tela.
         $this->validate([
             'name' => 'required|string|max:255',
             'trading_name' => 'required|string|max:255',
@@ -49,15 +71,12 @@ class CadastroEmpresa extends Component
             'representative' => 'required|string|max:255',
             'phone' => 'nullable|string|max:20',
             'relationship_start_date' => 'required|date',
-            // Garante que o convênio não termine antes de começar
             'relationship_end_date' => 'required|date|after_or_equal:relationship_start_date',
-            'select_courses' => 'required|array|min:1', // Exige pelo menos 1 curso
+            'select_courses' => 'required|array|min:1', 
             'status' => 'required|in:active,inactive',
             'observations' => 'nullable|string|max:1000',
         ]);
 
-        // Se  $this->companyId for nulo, ele executa um "INSERT INTO companies..."
-        // Se contiver um número, ele faz um "UPDATE companies SET ... WHERE id = X"
         Company::updateOrCreate(
             ['id' => $this->companyId],
             [
@@ -68,20 +87,20 @@ class CadastroEmpresa extends Component
                 'phone' => $this->phone,
                 'relationship_start_date' => $this->relationship_start_date,   
                 'relationship_end_date' => $this->relationship_end_date,
-                'courses' => $this->select_courses, // O Laravel convertera o array em texto/json para o banco
+                'courses' => $this->select_courses, 
                 'status' => $this->status,
                 'observations' => $this->observations,
             ]
         );
         
-        // Guarda uma mensagem tempóraria na sessão para exibir o alerta verde de sucesso
-        session()->flash('message', 'Empresa salva com sucesso no banco de dados!');
+        // Mensagem dinâmica baseada na ação executada
+        session()->flash('message', $this->companyId ? 'Convênio atualizado com sucesso!' : 'Empresa cadastrada com sucesso!');
 
-        // Limpa os campos do formulário para o próximo cadastro
-        $this->resetForm();
+        // Em vez de só resetar, redireciona o usuário de volta para a listagem principal
+        return redirect()->to('/empresas');
     }
 
-    // Função auxiliar interna para limpar os estados das variáveis
+    // Função auxiliar interna (mantida caso precise usar)
     private function resetForm()
     {
         $this->companyId = null;
@@ -98,7 +117,6 @@ class CadastroEmpresa extends Component
     }
 
     // 3. RENDERIZAÇÃO
-    // Este método indica ao Laravel qual é o arquivo visual que representa este componente.
     public function render()
     {
         return view('livewire.cadastro-empresa');

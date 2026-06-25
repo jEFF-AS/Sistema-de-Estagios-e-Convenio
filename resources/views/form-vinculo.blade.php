@@ -1,5 +1,5 @@
 @extends('layouts.app')
 
 @section('conteudo')
-    @livewire( 'form-vinculo', ['internship' => $id ?? null])
+    @livewire( 'form-vinculo', ['internshipId' => $id ?? null])
 @endsection

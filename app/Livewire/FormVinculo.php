@@ -9,9 +9,9 @@ use App\Models\Internship;
 
 class FormVinculo extends Component
 {
-    // ID para controle Hibrido (Cadastro vc Edição)
     public $internshipId = null;
-    // propriedades do Formulário 
+
+    // Propriedades do Formulário 
     public $student_id;
     public $company_id;
     public $status = 'active';
@@ -21,45 +21,62 @@ class FormVinculo extends Component
     public $estimated_end_date;
     public $real_end_date;
 
-    // Propriedades de leitura Dinâmica 
+    // Propriedades de leitura Dinâmica
     public $student_observations = '';
     public $company_observations = '';
 
-    // Roda automaticamente ao carregar o componente
     public function mount($internshipId = null)
     {
         if ($internshipId) {
             $this->internshipId = $internshipId;
-            // Quando formos fazer a edição, os dados serão carregados aqui
+            
+            // Busca o vínculo existente no banco
             $vinculo = Internship::findOrFail($internshipId);
+            
+            // Popula os campos do formulário para edição
             $this->student_id = $vinculo->student_id;
+            $this->company_id = $vinculo->company_id;
+            $this->status = $vinculo->status;
+            $this->type = $vinculo->type;
+            $this->modality = $vinculo->modality;
+            $this->start_date = $vinculo->start_date;
+            $this->estimated_end_date = $vinculo->estimated_end_date;
+            $this->real_end_date = $vinculo->real_end_date;
+
+            // Já engatilha o carregamento das observações na edição
+            $this->updatedStudentId($this->student_id);
+            $this->updatedCompanyId($this->company_id);
         }
     }
 
-    // GATILHO: Roda toda vez que o 'student_id' mudar no select
-    public function updateStudentId($value)
+    // GATILHO: Busca observações do Aluno em tempo real
+    public function updatedStudentId($value)
     {
         if ($value) {
             $student = Student::find($value);
-            $this->student_observations = $student && $student->observations ? $student->observations : 'Sem observações cadastradas para este aluno.';
+            $this->student_observations = $student && !empty($student->observations) 
+                ? $student->observations 
+                : 'Sem observações cadastradas para este aluno.';
         } else {
             $this->student_observations = '';
         }
     }
 
-    // GATILHO: Roda toda vez que o 'company_id' mudar no select
-    public function updateCompanyId($value)
+    // GATILHO: Busca observações da Empresa em tempo real
+    public function updatedCompanyId($value)
     {
         if ($value) {
             $company = Company::find($value);
-            $this->company_observations = $company && $company->observations ? $company->observations : 'Sem observações cadastradas para esta empresa.';
+            $this->company_observations = $company && !empty($company->observations) 
+                ? $company->observations 
+                : 'Sem observações cadastradas para esta empresa.';
         } else {
             $this->company_observations = '';
         }
     }
 
-    public function save() {
-        // Validação dos dados informados no formulário
+    public function save()
+    {
         $this->validate([
             'student_id' => 'required|exists:students,id',
             'company_id' => 'required|exists:companies,id',
@@ -71,9 +88,8 @@ class FormVinculo extends Component
             'real_end_date' => 'nullable|date|after_or_equal:start_date',
         ]);
 
-        // Gravação híbrida inteligente (Se tiver ID atualiza, se não, cria um novo)
-        \App\Models\Internship::updateOrCreate(
-            ['id' => $this->internshipId], // Condição de busca para atualização
+        Internship::updateOrCreate(
+            ['id' => $this->internshipId],
             [
                 'student_id' => $this->student_id,
                 'company_id' => $this->company_id,
@@ -82,22 +98,20 @@ class FormVinculo extends Component
                 'modality' => $this->modality,
                 'start_date' => $this->start_date,
                 'estimated_end_date' => $this->estimated_end_date,
-                'real_end_date' => $this->real_end_date ?: null, // Salva nulo se estiver em branco
+                'real_end_date' => $this->real_end_date ?: null,
             ]
         );
 
-
         session()->flash('message', $this->internshipId ? 'Vínculo atualizado com sucesso!' : 'Vínculo criado com sucesso!');
-        return redirect()->to('/vinculos'); 
+        
+        return redirect()->to('/vinculos');
     }
 
     public function render()
     {
         return view('livewire.form-vinculo', [
-            // passamos os alunos e empresas cadastradas para popular os selects
             'students' => Student::orderBy('name')->get(),
             'companies' => Company::orderBy('name')->get(),
         ]);
     }
 }
-?>

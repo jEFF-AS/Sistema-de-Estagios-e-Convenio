@@ -61,9 +61,13 @@ class ListaVinculos extends Component
             $query->whereDate('estimated_end_date', '<=', $this->end_date);
         }
 
-        $query->join('students', 'internships.student_id', '=', 'students.id')
-              ->orderBy('students.name', 'asc')
-              ->select('internships.*'); // Mantém o foco dos dados na tabela de estágios
+        // LOGICA NOVA: Ordena pelo nome do aluno usando Subquery segura (substitui o join antigo)
+        $query->orderBy(
+            \App\Models\Student::select('name')
+                ->whereColumn('students.id', 'internships.student_id')
+                ->take(1),
+            'asc'
+        );
 
         return view('livewire.lista-vinculos', [
             'internships' => $query->get()

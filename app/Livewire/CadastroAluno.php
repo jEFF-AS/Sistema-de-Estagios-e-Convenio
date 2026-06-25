@@ -55,16 +55,21 @@ class CadastroAluno extends Component
         }
     }
 
-    public function save()
+public function save()
     {
         $this->validate([
             'name' => 'required|string|max:255',
-            'registration_number' => 'required|string|max:50',
+            // VALIDAÇÃO INTELIGENTE: Exige matrícula única, mas ignora o ID atual se for edição
+            'registration_number' => 'required|string|max:50|unique:students,registration_number,' . ($this->studentId ?? 'NULL'),
             'course' => 'required|string',
             'period' => 'required',
             'phone' => 'nullable|string|max:20',
             'course_start_date' => 'required|date',
             'observations' => 'nullable|string|max:1000',
+        ], [
+            // Mensagem personalizada amigável para a tela
+            'registration_number.unique' => 'Esta matrícula já está cadastrada para outro aluno.',
+            'registration_number.required' => 'O número de matrícula é obrigatório.',
         ]);
 
         Student::updateOrCreate(

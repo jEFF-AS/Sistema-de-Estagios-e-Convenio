@@ -62,12 +62,13 @@ class CadastroEmpresa extends Component
     }
 
     // 2. REGRAS DE VALIDAÇÃO E SALVAMENTO
-    public function save()
+public function save()
     {
         $this->validate([
             'name' => 'required|string|max:255',
             'trading_name' => 'required|string|max:255',
-            'cnpj' => 'required|string|max:18',
+            // CNPJ ÚNICO INTELIGENTE: Ignora o ID atual caso seja uma edição de cadastro
+            'cnpj' => 'required|string|max:25|unique:companies,cnpj,' . ($this->companyId ?? 'NULL'),
             'representative' => 'required|string|max:255',
             'phone' => 'nullable|string|max:20',
             'relationship_start_date' => 'required|date',
@@ -75,6 +76,12 @@ class CadastroEmpresa extends Component
             'select_courses' => 'required|array|min:1', 
             'status' => 'required|in:active,inactive',
             'observations' => 'nullable|string|max:1000',
+        ], [
+            // Mensagens customizadas que aparecem na tela para o usuário
+            'cnpj.unique' => 'Este CNPJ já está cadastrado para outra empresa conveniada.',
+            'cnpj.required' => 'O campo CNPJ é obrigatório.',
+            'select_courses.required' => 'Selecione pelo menos um curso vinculado ao convênio.',
+            'relationship_end_date.after_or_equal' => 'A data de término deve ser igual ou posterior à data de início.',
         ]);
 
         Company::updateOrCreate(

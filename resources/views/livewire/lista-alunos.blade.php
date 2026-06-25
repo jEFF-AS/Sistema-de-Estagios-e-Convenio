@@ -12,7 +12,7 @@
 
     <div class="bg-white border border-gray-200 rounded-2xl p-4 mb-6 shadow-sm flex gap-4 items-center">
         <div class="flex-1 relative">
-            <input wire:model.live="search" type="text" placeholder="🔍 Buscar por nome, matrícula ou curso..." class="w-full pl-4 pr-3 py-2 border border-gray-300 rounded-xl text-xs shadow-sm focus:ring-2 focus:ring-blue-500 focus:outline-none bg-gray-50/50 text-gray-600 font-medium">
+            <input wire:model.live="search" type="text" placeholder="🔍 Buscar por nome ou matrícula..." class="w-full pl-4 pr-3 py-2 border border-gray-300 rounded-xl text-xs shadow-sm focus:ring-2 focus:ring-blue-500 focus:outline-none bg-gray-50/50 text-gray-600 font-medium">
         </div>
         
         <div class="w-64">

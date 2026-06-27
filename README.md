@@ -1,6 +1,6 @@
 # Sistema de Gestão de Estágios e Convênios
 
-Sistema web desenvolvido como projeto prático para o relatório final de estágio. A aplicação foi concebida para centralizar e automatizar o controle operacional de empresas conveniadas, alunos elegíveis e termos de compromisso (vínculos de estágio), além de fornecer um dashboard com indicadores gerenciais para o tomador de decisão.
+Sistema web desenvolvido como projeto prático para o estágio. A aplicação foi concebida para centralizar e automatizar o controle operacional de empresas conveniadas, alunos elegíveis e termos de compromisso (vínculos de estágio), além de fornecer um dashboard com indicadores gerenciais para o tomador de decisão.
 
 ## 🚀 Tecnologias Utilizadas
 
@@ -82,7 +82,7 @@ Certifique-se de que o seu servidor MySQL está ativo e que o banco de dados esp
 php artisan migrate
 ```
 
-## Como Rodar a Aplicação
+## 🏃‍♂️ Como Rodar a Aplicação
 
 Com tudo configurado, você precisará de dois terminais rodando simultaneamente para executar o servidor backend e o compilador do frontend:
 

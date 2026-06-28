@@ -33,14 +33,14 @@
 
             <div>
                 <label class="block text-xs font-extrabold text-gray-700 uppercase tracking-wider mb-2">Status:</label>
-                <select wire:model="status" class="w-full px-3 py-2 border border-gray-300 !rounded-xl text-sm shadow-sm bg-white focus:ring-2 focus:ring-blue-500 focus:outline-none transition font-medium text-gray-600">
+                <select wire:model.live="status" class="w-full px-3 py-2 border border-gray-300 !rounded-xl text-sm shadow-sm bg-white focus:ring-2 focus:ring-blue-500 focus:outline-none transition font-medium text-gray-600">
                     <option value="active">Ativo</option>
                     <option value="finished">Finalizado</option>
                 </select>
             </div>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-5 gap-4">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
             <div>
                 <label class="block text-xs font-extrabold text-gray-700 uppercase tracking-wider mb-2">Modalidade:</label>
                 <select wire:model="type" class="w-full px-3 py-2 border border-gray-300 !rounded-xl text-sm shadow-sm bg-white focus:ring-2 focus:ring-blue-500 focus:outline-none transition font-medium text-gray-600">
@@ -66,11 +66,13 @@
                 <label class="block text-xs font-extrabold text-gray-600 uppercase tracking-wider mb-2">Término Previsto:</label>
                 <input wire:model="estimated_end_date" type="date" class="w-full px-3 py-2 border border-gray-300 !rounded-xl text-sm shadow-sm focus:ring-2 focus:ring-blue-500 focus:outline-none transition text-gray-600">
             </div>
-
-            <div>
-                <label class="block text-xs font-extrabold text-gray-600 uppercase tracking-wider mb-2">Data Real de Término:</label>
+            
+            @if($status === 'finished')
+            <div class="md:col-span-1">
+                <label class="block text-xs font-extrabold text-gray-600 uppercase tracking-wider mb-2 whitespace-nowrap">Data Real de Término:</label>
                 <input wire:model="real_end_date" type="date" class="w-full px-3 py-2 border border-gray-300 !rounded-xl text-sm shadow-sm focus:ring-2 focus:ring-blue-500 focus:outline-none transition text-gray-600">
             </div>
+            @endif
         </div>
 
         <div>

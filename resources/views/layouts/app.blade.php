@@ -16,13 +16,13 @@
         <div class="w-64 bg-[#1e40af] text-white flex flex-col justify-between shadow-xl">
             <div>
                 <div class="p-6 flex justify-center">
-                    <div class="w-24 h-24 bg-gray-300 rounded-2xl flex items-center justify-center shadow-inner">
-                        <span class="text-gray-500 text-xs font-bold uppercase tracking-wider">Logo</span>
+                    <div class="w-30 h-30 flex items-center justify-center">
+                        <img src="{{ asset('img/atenas.png') }}" alt ="Logo Estágios e Convênios" class="w-full h-full object-contain filter drop-shadow-sm rounded-3xl">
                     </div>
                 </div>
                 <div class="px-6 py-2 text-center border-b border-blue-700/50 font-semibold uppercase tracking-wider text-sm">Menu</div>
                 <nav class="mt-6 px-4 space-y-3">
-                    <a href="/relatorios" class="flex items-center justify-center w-full px-4 py-2.5 rounded-lg shadow-md font-bold text-sm tracking-wide border transition {{ request()->is('painel*') ? 'bg-blue-800 text-white border-blue-600' : 'bg-white text-[#1e40af] border-gray-200' }}">Painel Geral</a>
+                    <a href="/relatorios" class="flex items-center justify-center w-full px-4 py-2.5 rounded-lg shadow-md font-bold text-sm tracking-wide border transition {{ request()->is('relatorios*') ? 'bg-blue-800 text-white border-blue-600' : 'bg-white text-[#1e40af] border-gray-200' }}">Painel Geral</a>
                     <a href="/empresas" class="flex items-center justify-center w-full px-4 py-2.5 rounded-lg shadow-md font-bold text-sm tracking-wide border transition {{ request()->is('empresas*') ? 'bg-blue-800 text-white border-blue-600' : 'bg-white text-[#1e40af] border-gray-200' }}">Empresas</a>
                     <a href="/alunos" class="flex items-center justify-center w-full px-4 py-2.5 rounded-lg shadow-md font-bold text-sm tracking-wide border transition {{ request()->is('alunos*') ? 'bg-blue-800 text-white border-blue-600' : 'bg-white text-[#1e40af] border-gray-200' }}">Alunos</a>
                     <a href="/vinculos" class="flex items-center justify-center w-full px-4 py-2.5 rounded-lg shadow-md font-bold text-sm tracking-wide border transition {{ request()->is('vinculos*') ? 'bg-blue-800 text-white border-blue-600' : 'bg-white text-[#1e40af] border-gray-200' }}">Vínculos</a>

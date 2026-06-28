@@ -17,6 +17,7 @@ class Student extends Model
         'registration_number',
         'course',
         'period',
+        'phone',
         'course_start_date',
         'observations',
     ];
